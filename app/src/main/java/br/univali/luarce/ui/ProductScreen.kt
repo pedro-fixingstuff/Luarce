@@ -24,17 +24,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import br.univali.luarce.R
 import br.univali.luarce.ui.components.AppScaffoldWithDrawer
 import br.univali.luarce.ui.components.Counter
 import br.univali.luarce.ui.components.Footer
 import br.univali.luarce.ui.components.ProductFeature
+import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductScreen(navController: NavHostController) {
+fun ProductScreen(
+    onBuyButtonClicked: () -> Unit = {},
+    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    onMainItemClicked: () -> Unit = {},
+    onCatalogItemClicked: () -> Unit = {},
+    onCartItemClicked: () -> Unit = {},
+    onLogoutItemClicked: () -> Unit = {}
+) {
     val carouselItems =
         listOf(
             R.drawable.produto,
@@ -43,13 +50,13 @@ fun ProductScreen(navController: NavHostController) {
         )
     val carouselState = rememberCarouselState { carouselItems.count() }
 
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val coroutineScope = rememberCoroutineScope()
-
     AppScaffoldWithDrawer(
         drawerState = drawerState,
         coroutineScope = coroutineScope,
-        navController = navController,
+        onMainItemClicked = onMainItemClicked,
+        onCatalogItemClicked = onCatalogItemClicked,
+        onCartItemClicked = onCartItemClicked,
+        onLogoutItemClicked = onLogoutItemClicked,
         content = {
             Column(
                 modifier = Modifier
@@ -140,7 +147,7 @@ fun ProductScreen(navController: NavHostController) {
                                 .fillMaxSize()
                                 .background(Color(0xFFFFFFFF))
                                 .border(1.dp, Color(0, 0, 0, 104))
-                                .clickable { navController.navigate("info") },
+                                .clickable { onBuyButtonClicked() },
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
@@ -162,5 +169,5 @@ fun ProductScreen(navController: NavHostController) {
 @Preview(showBackground = true)
 @Composable
 fun ProductPreview() {
-    ProductScreen(rememberNavController())
+    ProductScreen()
 }

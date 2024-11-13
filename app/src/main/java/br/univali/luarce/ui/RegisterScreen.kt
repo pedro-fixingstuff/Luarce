@@ -16,12 +16,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import br.univali.luarce.ui.components.TopAppBarWithoutMenu
 
 @Composable
-fun RegisterScreen(navController: NavHostController) {
+fun RegisterScreen(
+    onFinishButtonClicked: () -> Unit = {}
+) {
     Scaffold(
         topBar = { TopAppBarWithoutMenu() },
         containerColor = Color(0xFFECE8C6), // alterado para containerColor
@@ -101,7 +101,7 @@ fun RegisterScreen(navController: NavHostController) {
                         )
 
                         Button(
-                            onClick = { navController.navigate("main") },
+                            onClick = onFinishButtonClicked,
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color(0xFFBBB36B), // alterado para containerColor
                                 contentColor = Color.White // Texto branco
@@ -120,5 +120,5 @@ fun RegisterScreen(navController: NavHostController) {
 @Preview(showBackground = true)
 @Composable
 fun RegisterPreview() {
-    RegisterScreen(rememberNavController())
+    RegisterScreen()
 }

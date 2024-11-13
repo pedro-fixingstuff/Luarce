@@ -13,22 +13,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import br.univali.luarce.ui.components.AppScaffoldWithDrawer
 import br.univali.luarce.ui.components.Footer
 import br.univali.luarce.ui.components.ProductCard
+import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun CatalogScreen(navController: NavHostController) {
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val coroutineScope = rememberCoroutineScope()
-
+fun CatalogScreen(
+    onProductCardClicked: () -> Unit = {},
+    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    onMainItemClicked: () -> Unit = {},
+    onCartItemClicked: () -> Unit = {},
+    onLogoutItemClicked: () -> Unit = {}
+) {
     AppScaffoldWithDrawer(
         currentScreen = "catalog",
         drawerState = drawerState,
         coroutineScope = coroutineScope,
-        navController = navController,
+        onMainItemClicked = onMainItemClicked,
+        onCartItemClicked = onCartItemClicked,
+        onLogoutItemClicked = onLogoutItemClicked,
         content = {
             Column(
                 modifier = Modifier
@@ -42,18 +47,18 @@ fun CatalogScreen(navController: NavHostController) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    ProductCard("Produto 1", 40.00, navController)
-                    ProductCard("Produto 2", 40.00, navController)
-                    ProductCard("Produto 3", 40.00, navController)
+                    ProductCard("Produto 1", 40.00, onProductCardClicked)
+                    ProductCard("Produto 2", 40.00, onProductCardClicked)
+                    ProductCard("Produto 3", 40.00, onProductCardClicked)
                 }
                 Spacer(Modifier.height(16.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    ProductCard("Produto 4", 40.00, navController)
-                    ProductCard("Produto 5", 40.00, navController)
-                    ProductCard("Produto 6", 40.00, navController)
+                    ProductCard("Produto 4", 40.00, onProductCardClicked)
+                    ProductCard("Produto 5", 40.00, onProductCardClicked)
+                    ProductCard("Produto 6", 40.00, onProductCardClicked)
                 }
                 Spacer(Modifier.weight(1f))
                 Footer()
@@ -89,5 +94,5 @@ fun CatalogHeader() {
 @Preview(showBackground = true)
 @Composable
 fun CatalogPreview() {
-    CatalogScreen(rememberNavController())
+    CatalogScreen()
 }

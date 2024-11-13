@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "757250500439",
+    "project_id": "luarce-622d3",
+    "storage_bucket": "luarce-622d3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757250500439:android:86a0fab30aa448b109c012",
+        "android_client_info": {
+          "package_name": "br.univali.luarce"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSYsYaKOdgFlN8Am1yGUNz1exfa3vYpyM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

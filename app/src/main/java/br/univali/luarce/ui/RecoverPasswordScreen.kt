@@ -15,12 +15,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import br.univali.luarce.ui.components.TopAppBarWithoutMenu
 
 @Composable
-fun RecoverPasswordScreen(navController: NavHostController) {
+fun RecoverPasswordScreen(
+    onRedefineButtonClicked: () -> Unit = {}
+) {
     Scaffold(
         topBar = { TopAppBarWithoutMenu() },
         containerColor = Color(0xFFECE8C6),
@@ -64,7 +64,7 @@ fun RecoverPasswordScreen(navController: NavHostController) {
                         )
 
                         Button(
-                            onClick = { navController.navigate("main") },
+                            onClick = onRedefineButtonClicked,
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color(0xFFBBB36B),
                                 contentColor = Color(0xFFFFFFFF)
@@ -83,5 +83,5 @@ fun RecoverPasswordScreen(navController: NavHostController) {
 @Preview(showBackground = true)
 @Composable
 fun RecoverPasswordPreview() {
-    RecoverPasswordScreen(rememberNavController())
+    RecoverPasswordScreen()
 }

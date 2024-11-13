@@ -17,29 +17,37 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import br.univali.luarce.R
 import br.univali.luarce.ui.components.AppScaffoldWithDrawer
+import kotlinx.coroutines.CoroutineScope
 
 data class Product(val name: String, val price: String, val quantity: Int, val image: Int)
 
 @Composable
-fun CartScreen(navController: NavHostController) {
+fun CartScreen(
+    onFinishButtonClicked: () -> Unit = {},
+    onInfoButtonClicked: () -> Unit = {},
+    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    onMainItemClicked: () -> Unit = {},
+    onCatalogItemClicked: () -> Unit = {},
+    onCartItemClicked: () -> Unit = {},
+    onLogoutItemClicked: () -> Unit = {}
+) {
     val products = listOf(
         Product("Produto 1", "R$69,90", 1, R.drawable.produto),
         Product("Produto 2", "R$39,90", 3, R.drawable.produto),
         Product("Produto 3", "R$79,90", 2, R.drawable.produto)
     )
 
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val coroutineScope = rememberCoroutineScope()
-
     AppScaffoldWithDrawer(
         currentScreen = "cart",
         drawerState = drawerState,
         coroutineScope = coroutineScope,
-        navController = navController,
+        onMainItemClicked = onMainItemClicked,
+        onCatalogItemClicked = onCatalogItemClicked,
+        onCartItemClicked = onCartItemClicked,
+        onLogoutItemClicked = onLogoutItemClicked,
         content = {
             Column(
                 modifier = Modifier
@@ -107,7 +115,7 @@ fun CartScreen(navController: NavHostController) {
                         }
 
                         Button(
-                            onClick = { navController.navigate("main") },
+                            onClick = onFinishButtonClicked,
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color(0xFFBBB36B),
                                 contentColor = Color.White
@@ -121,7 +129,7 @@ fun CartScreen(navController: NavHostController) {
 
 
                         Button(
-                            onClick = { navController.navigate("info") },
+                            onClick = onInfoButtonClicked,
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color(0xFFBBB36B),
                                 contentColor = Color.White
@@ -189,5 +197,5 @@ fun ProductRow(product: Product) {
 @Preview(showBackground = true)
 @Composable
 fun CartPreview() {
-    CartScreen(rememberNavController())
+    CartScreen()
 }

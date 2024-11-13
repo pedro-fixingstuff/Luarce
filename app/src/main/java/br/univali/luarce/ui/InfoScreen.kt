@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -27,19 +28,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import br.univali.luarce.ui.components.AppScaffoldWithDrawer
+import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun InfoScreen(navController: NavHostController) {
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val coroutineScope = rememberCoroutineScope()
-
+fun InfoScreen(
+    onUpdateButtonClicked: () -> Unit = {},
+    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    onMainItemClicked: () -> Unit = {},
+    onCatalogItemClicked: () -> Unit = {},
+    onCartItemClicked: () -> Unit = {},
+    onLogoutItemClicked: () -> Unit = {}
+) {
     AppScaffoldWithDrawer(
         drawerState = drawerState,
         coroutineScope = coroutineScope,
-        navController = navController,
+        onMainItemClicked = onMainItemClicked,
+        onCatalogItemClicked = onCatalogItemClicked,
+        onCartItemClicked = onCartItemClicked,
+        onLogoutItemClicked = onLogoutItemClicked,
         content = {
             Column(
                 modifier = Modifier
@@ -157,7 +165,7 @@ fun InfoScreen(navController: NavHostController) {
                 }
 
                 Button(
-                    onClick = { navController.navigate("cart") },
+                    onClick = onUpdateButtonClicked,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFBBB36B),
                         contentColor = Color.White
@@ -174,5 +182,5 @@ fun InfoScreen(navController: NavHostController) {
 @Preview(showBackground = true)
 @Composable
 fun InfoPreview() {
-    InfoScreen(rememberNavController())
+    InfoScreen()
 }

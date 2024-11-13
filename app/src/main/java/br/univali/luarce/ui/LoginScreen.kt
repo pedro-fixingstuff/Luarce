@@ -13,12 +13,14 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import br.univali.luarce.ui.components.TopAppBarWithoutMenu
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun LoginScreen(
+    onLoginButtonClicked: () -> Unit = {},
+    onRecoverPasswordButtonClicked: () -> Unit = {},
+    onRegisterButtonClicked: () -> Unit = {}
+) {
     Scaffold(
         topBar = { TopAppBarWithoutMenu() },
         containerColor = Color(0xFFECE8C6),
@@ -74,7 +76,7 @@ fun LoginScreen(navController: NavHostController) {
                         )
 
                         Button(
-                            onClick = { navController.navigate("main") },
+                            onClick = onLoginButtonClicked,
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color(0xFFBBB36B),
                                 contentColor = Color(0xFFFFFFFF)
@@ -92,7 +94,7 @@ fun LoginScreen(navController: NavHostController) {
                             fontStyle = FontStyle.Italic,
                             modifier = Modifier
                                 .padding(top = 16.dp)
-                                .clickable { navController.navigate("recoverPassword") }
+                                .clickable { onRecoverPasswordButtonClicked() }
                         )
 
 
@@ -102,7 +104,7 @@ fun LoginScreen(navController: NavHostController) {
                             fontStyle = FontStyle.Italic,
                             modifier = Modifier
                                 .padding(top = 8.dp)
-                                .clickable { navController.navigate("register") }
+                                .clickable { onRegisterButtonClicked() }
                         )
                     }
                 }
@@ -114,5 +116,5 @@ fun LoginScreen(navController: NavHostController) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    LoginScreen(rememberNavController())
+    LoginScreen()
 }

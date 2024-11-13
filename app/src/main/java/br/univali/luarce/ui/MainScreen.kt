@@ -16,17 +16,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import br.univali.luarce.ui.components.AppScaffoldWithDrawer
 import br.univali.luarce.ui.components.Footer
 import br.univali.luarce.ui.components.ProductCard
 import br.univali.luarce.ui.components.ProductIcon
 import br.univali.luarce.ui.components.SectionHeader
+import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(navController: NavHostController) {
+fun MainScreen(
+    onProductCardClicked: () -> Unit = {},
+    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    onCatalogItemClicked: () -> Unit = {},
+    onCartItemClicked: () -> Unit = {},
+    onLogoutItemClicked: () -> Unit = {}
+) {
     val carouselItems =
         listOf(
             Color(159, 127, 127),
@@ -35,14 +41,13 @@ fun MainScreen(navController: NavHostController) {
         )
     val carouselState = rememberCarouselState { carouselItems.count() }
 
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val coroutineScope = rememberCoroutineScope()
-
     AppScaffoldWithDrawer(
         currentScreen = "main",
         drawerState = drawerState,
         coroutineScope = coroutineScope,
-        navController = navController,
+        onCatalogItemClicked = onCatalogItemClicked,
+        onCartItemClicked = onCartItemClicked,
+        onLogoutItemClicked = onLogoutItemClicked,
         content = {
             Column(
                 modifier = Modifier
@@ -79,18 +84,18 @@ fun MainScreen(navController: NavHostController) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    ProductCard("Produto 1", 40.00, navController)
-                    ProductCard("Produto 2", 40.00, navController)
-                    ProductCard("Produto 3", 40.00, navController)
+                    ProductCard("Produto 1", 40.00, onProductCardClicked)
+                    ProductCard("Produto 2", 40.00, onProductCardClicked)
+                    ProductCard("Produto 3", 40.00, onProductCardClicked)
                 }
                 SectionHeader("Ideias de Presente")
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    ProductCard("Produto 1", 40.00, navController)
-                    ProductCard("Produto 2", 40.00, navController)
-                    ProductCard("Produto 3", 40.00, navController)
+                    ProductCard("Produto 1", 40.00, onProductCardClicked)
+                    ProductCard("Produto 2", 40.00, onProductCardClicked)
+                    ProductCard("Produto 3", 40.00, onProductCardClicked)
                 }
                 Spacer(Modifier.weight(1f))
                 Footer()
@@ -102,5 +107,5 @@ fun MainScreen(navController: NavHostController) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    MainScreen(rememberNavController())
+    MainScreen()
 }

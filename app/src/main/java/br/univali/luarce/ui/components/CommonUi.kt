@@ -51,7 +51,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import br.univali.luarce.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -64,7 +63,10 @@ fun AppScaffoldWithDrawer(
     content: @Composable () -> Unit,
     drawerState: DrawerState,
     coroutineScope: CoroutineScope,
-    navController: NavHostController
+    onMainItemClicked: () -> Unit = {},
+    onCatalogItemClicked: () -> Unit = {},
+    onCartItemClicked: () -> Unit = {},
+    onLogoutItemClicked: () -> Unit = {}
 ) {
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -75,7 +77,7 @@ fun AppScaffoldWithDrawer(
                 NavigationDrawerItem(
                     label = { Text(text = "Início") },
                     selected = currentScreen == "main",
-                    onClick = { navController.navigate("main") },
+                    onClick = onMainItemClicked,
                     icon = {
                         Icon(
                             imageVector = Icons.Default.Home,
@@ -90,7 +92,7 @@ fun AppScaffoldWithDrawer(
                 NavigationDrawerItem(
                     label = { Text(text = "Catálogo") },
                     selected = currentScreen == "catalog",
-                    onClick = { navController.navigate("catalog") },
+                    onClick = onCatalogItemClicked,
                     icon = {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.List,
@@ -105,7 +107,7 @@ fun AppScaffoldWithDrawer(
                 NavigationDrawerItem(
                     label = { Text(text = "Carrinho") },
                     selected = currentScreen == "cart",
-                    onClick = { navController.navigate("cart") },
+                    onClick = onCartItemClicked,
                     icon = {
                         Icon(
                             imageVector = Icons.Default.ShoppingCart,
@@ -121,7 +123,7 @@ fun AppScaffoldWithDrawer(
                 NavigationDrawerItem(
                     label = { Text(text = "Sair") },
                     selected = false,
-                    onClick = { navController.navigate("login") },
+                    onClick = onLogoutItemClicked,
                     icon = {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ExitToApp,
@@ -141,7 +143,7 @@ fun AppScaffoldWithDrawer(
                 TopAppBar(drawerState, coroutineScope)
             },
             bottomBar = {
-                BottomAppBar(navController)
+                BottomAppBar(onCartItemClicked)
             },
             containerColor = Color(0xFFF7F6EF),
             content = { innerPadding ->
@@ -201,7 +203,11 @@ fun TopAppBarWithoutMenu() {
 }
 
 @Composable
-fun BottomAppBar(navController: NavHostController) {
+fun BottomAppBar(
+    onCartButtonClicked: () -> Unit = {},
+    onFavoritesButtonClicked: () -> Unit = {},
+    onUserButtonClicked: () -> Unit = {},
+) {
     androidx.compose.material.BottomAppBar(
         modifier = Modifier.height(72.dp),
         backgroundColor = Color(0xFFFFFFFF),
@@ -211,7 +217,7 @@ fun BottomAppBar(navController: NavHostController) {
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = { navController.navigate("cart") }) {
+            IconButton(onClick = onCartButtonClicked) {
                 Icon(
                     imageVector = Icons.Default.ShoppingCart,
                     contentDescription = "Carrinho",
@@ -219,7 +225,7 @@ fun BottomAppBar(navController: NavHostController) {
                     tint = Color(0xFF747474)
                 )
             }
-            IconButton(onClick = {}) {
+            IconButton(onClick = onFavoritesButtonClicked) {
                 Icon(
                     imageVector = Icons.Default.Favorite,
                     contentDescription = "Favoritos",
@@ -227,7 +233,7 @@ fun BottomAppBar(navController: NavHostController) {
                     tint = Color(0xFF747474)
                 )
             }
-            IconButton(onClick = {}) {
+            IconButton(onClick = onUserButtonClicked) {
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = "Usuário",
@@ -264,7 +270,11 @@ fun SectionHeader(text: String) {
 }
 
 @Composable
-fun ProductCard(name: String, price: Double, navController: NavHostController) {
+fun ProductCard(
+    name: String,
+    price: Double,
+    onClick: () -> Unit = {}
+) {
     Card(
         modifier = Modifier
             .width(100.dp)
@@ -300,7 +310,7 @@ fun ProductCard(name: String, price: Double, navController: NavHostController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color(0xFFE2E1CC))
-                    .clickable { navController.navigate("product") }
+                    .clickable { onClick() }
                     .padding(vertical = 8.dp),
                 contentAlignment = Alignment.Center
             ) {
